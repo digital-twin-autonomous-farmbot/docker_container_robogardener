@@ -11,6 +11,8 @@ services:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw  # X11 forwarding for GUI apps
     stdin_open: true  # Keeps STDIN open (interactive mode)
     tty: true         # Enables terminal support
+    networks:
+      - ros_network
 
 
   # foxglove to visualize live data 
@@ -22,4 +24,30 @@ services:
       - 8765:8765
     container_name: foxglove_bridge
     command: ros2 launch foxglove_bridge foxglove_bridge_launch.xml port:=8765
+    networks:
+      - ros_network
+  
+  caddy:
+    image: caddy:latest
+    restart: always
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - "8080:80"
+      - "8443:443"
+      - "8443:443/udp"
+    volumes:
+      - /home/multimico/robogardener/docker_container_robogardener/container_ros2_jazzy/Caddyfile:/etc/caddy/Caddyfile
+      - ./site:/srv
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - ros_network
 
+networks:
+  ros_network:
+    driver: bridge
+
+volumes:
+  caddy_data:
+  caddy_config:

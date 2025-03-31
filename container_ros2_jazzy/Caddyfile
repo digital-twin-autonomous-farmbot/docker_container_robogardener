@@ -1,0 +1,11 @@
+{
+    email grahanoi@students.zhaw.ch
+}
+
+:80 {
+    respond "Caddy is running"
+}
+
+robogardeneradls.com:443 {
+    reverse_proxy foxglove_bridge:8765
+}
