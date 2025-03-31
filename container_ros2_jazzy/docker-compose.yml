@@ -11,3 +11,15 @@ services:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw  # X11 forwarding for GUI apps
     stdin_open: true  # Keeps STDIN open (interactive mode)
     tty: true         # Enables terminal support
+
+
+  # foxglove to visualize live data 
+  foxglove_bridge:
+    build:
+      context: ./foxglove_bridge/
+      dockerfile: Dockerfile
+    ports:
+      - 8765:8765
+    container_name: foxglove_bridge
+    command: ros2 launch foxglove_bridge foxglove_bridge_launch.xml port:=8765
+
