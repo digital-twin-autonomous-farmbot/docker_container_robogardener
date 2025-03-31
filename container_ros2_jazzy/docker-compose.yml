@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  ros2_jazzy:
+    build: .  # Uses the Dockerfile in the current directory
+    container_name: ros2_jazzy
+    environment:
+      - DISPLAY=172.30.144.1:2
+      - QT_X11_NO_MITSHM=1  # Prevents X11 shared memory issues
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw  # X11 forwarding for GUI apps
+    stdin_open: true  # Keeps STDIN open (interactive mode)
+    tty: true         # Enables terminal support
