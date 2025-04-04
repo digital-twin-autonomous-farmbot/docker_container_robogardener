@@ -17,6 +17,7 @@ RUN apt-get update && apt-get install -y \
     ros-jazzy-joint-state-publisher \
     ros-jazzy-joint-state-publisher-gui \
     ros-jazzy-ament-lint-auto \
+    ros-jazzy-gz-ros2-control \
     # Install development tools
     python3-flake8-blind-except \
     python3-flake8-class-newline \
