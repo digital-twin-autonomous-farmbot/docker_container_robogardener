@@ -1,16 +1,59 @@
-FROM osrf/ros:jazzy-desktop-full
+# Use the existing ROS2 Jazzy desktop image
+FROM osrf/ros:jazzy-desktop
 
-# Install foxglove_bridge package
-RUN apt-get update && \
-    apt-get install -y ros-jazzy-foxglove-bridge && \
-    rm -rf /var/lib/apt/lists/*
+# Set non-interactive mode to avoid interactive prompts
+ENV DEBIAN_FRONTEND=noninteractive 
+ENV ROS_WS=/ros_ws
 
-# Copy ros_entrypoint.sh to the container
+# Update system and install additional dependencies
+RUN apt-get update && apt-get install -y \
+    x11-xserver-utils \
+    python3-pip \
+    software-properties-common \
+    curl \
+    # Install ros2 jazzy packages
+    ros-dev-tools \
+    ros-jazzy-xacro \
+    ros-jazzy-joint-state-publisher \
+    ros-jazzy-joint-state-publisher-gui \
+    ros-jazzy-ament-lint-auto \
+    # Install development tools
+    python3-flake8-blind-except \
+    python3-flake8-class-newline \
+    python3-flake8-deprecated \
+    python3-mypy \
+    python3-pytest \
+    python3-pytest-cov \
+    python3-pytest-mock \
+    python3-pytest-repeat \
+    python3-pytest-rerunfailures \
+    python3-pytest-runner \
+    python3-pytest-timeout \
+    && rm -rf /var/lib/apt/lists/*
+
+# Initialize rosdep if not already initialized
+RUN if [ ! -f /etc/ros/rosdep/sources.list.d/20-default.list ]; then \
+      rosdep init; \
+    fi && \
+    rosdep update
+
+# Set up workspace
+RUN mkdir -p ${ROS_WS}/src
+WORKDIR ${ROS_WS}
+
+# Pre-install dependencies (without source code)
+RUN touch src/COLCON_IGNORE  # Prevents colcon from failing on empty dir
+RUN rosdep install --from-paths src --ignore-src -r -y --skip-keys "fastcdr rti-connext-dds-6.0.1 urdfdom_headers"
+
+# Copy entrypoint script
 COPY ros_entrypoint.sh /ros_entrypoint.sh
-
-# Make sure ros_entrypoint.sh is executable
 RUN chmod +x /ros_entrypoint.sh
 
-# Set the entrypoint to use the copied script
+# Source ROS in .bashrc
+RUN echo "source /opt/ros/jazzy/setup.bash" >> ~/.bashrc && \
+    echo "source ${ROS_WS}/install/setup.bash" >> ~/.bashrc
+
+# X11 and entrypoint
+ENV DISPLAY=:2 QT_X11_NO_MITSHM=1
 ENTRYPOINT ["/ros_entrypoint.sh"]
 CMD ["bash"]
