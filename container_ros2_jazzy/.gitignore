@@ -1,4 +1,40 @@
-# Environment files
-.env
+# === ROS 2 ===
+build/
+install/
+log/
+*.log
+*.pyc
+__pycache__/
+
+# === Let’s Encrypt ===
+container_ros2_jazzy/container_robogardener/letsencrypt/
+# Or, just the file if you prefer:
+# container_ros2_jazzy/container_robogardener/letsencrypt/acme.json
+
+# === Docker ===
 *.env
-.env*
+.env.*
+docker-compose.override.yml
+docker-data/
+*.pid
+
+# === VSCode / Editor stuff ===
+.vscode/
+.idea/
+*.swp
+
+# === System files ===
+.DS_Store
+Thumbs.db
+
+# === Git ===
+*.orig
+*.rej
+
+# === Python (if applicable) ===
+*.egg-info/
+dist/
+*.egg
+.eggs/
+venv/
+.env/
