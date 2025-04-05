@@ -1,0 +1,19 @@
+# Use the ROS 2 Jazzy base image
+FROM ros:jazzy-ros-base
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the application code into the container
+COPY . .
+
+# Install any necessary dependencies
+RUN apt-get update && apt-get install -y \
+    ros-jazzy-foxglove-bridge \
+    && rm -rf /var/lib/apt/lists/*
+
+# Expose the port that the application will run on
+EXPOSE 8765
+
+# Define the command to run your application
+CMD ["ros2", "launch", "foxglove_bridge", "foxglove_bridge_launch.xml", "port:=8765"]

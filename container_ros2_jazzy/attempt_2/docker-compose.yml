@@ -14,6 +14,21 @@ services:
     networks:
       - ros_network
 
+# Use Traefik as a reverse proxy
+  traefik:
+    image: traefik:v3.1.2
+    command:
+      - "--api.insecure=true" # Enable Traefik dashboard (for development purposes)
+      - "--providers.docker=true" # Enable Docker as a provider
+      - "--entrypoints.web.address=:80" # Define an entrypoint for HTTP traffic
+    ports:
+      - "80:80" # Expose HTTP
+      - "8080:8080" # Expose Traefik dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # Allow Traefik to access Docker
+    networks:
+      - ros_network
+
 
   # foxglove to visualize live data 
   foxglove_bridge:
@@ -27,22 +42,7 @@ services:
     networks:
       - ros_network
   
-  caddy:
-    image: caddy:latest
-    restart: always
-    cap_add:
-      - NET_ADMIN
-    ports:
-      - "8080:80"
-      - "8443:443"
-      - "8443:443/udp"
-    volumes:
-      - /home/multimico/robogardener/docker_container_robogardener/container_ros2_jazzy/Caddyfile:/etc/caddy/Caddyfile
-      - ./site:/srv
-      - caddy_data:/data
-      - caddy_config:/config
-    networks:
-      - ros_network
+
 
 networks:
   ros_network:
