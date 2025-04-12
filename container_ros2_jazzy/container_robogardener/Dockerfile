@@ -32,6 +32,8 @@ RUN apt-get update && apt-get install -y \
     python3-pytest-timeout \
     && rm -rf /var/lib/apt/lists/*
 
+# Wichtig für ament_python
+RUN pip3 install setuptools==58.2.0
 # Initialize rosdep if not already initialized
 RUN if [ ! -f /etc/ros/rosdep/sources.list.d/20-default.list ]; then \
       rosdep init; \
