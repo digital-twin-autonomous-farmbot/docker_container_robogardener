@@ -1,6 +1,7 @@
 services:
   ros2:
     build:
+    # creat a image and uploade it to docker hub then use the image name here
       context: .
       dockerfile: Dockerfile
     container_name: ros2_jazzy_desktop

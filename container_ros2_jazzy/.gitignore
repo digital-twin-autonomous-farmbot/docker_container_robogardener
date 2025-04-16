@@ -38,3 +38,5 @@ dist/
 .eggs/
 venv/
 .env/
+.bib
+
