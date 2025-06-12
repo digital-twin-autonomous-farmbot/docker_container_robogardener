@@ -9,24 +9,6 @@ services:
       - "/dev/ttyUSB0:/dev/ttyUSB0"  # LiDAR
       - "/dev/ttyACM0:/dev/ttyACM0"  # Motor
       - "/dev/video0:/dev/video0"     # Camera
-    volumes:
-      - /home/pi/digital_twin_plants:/ros2_ws/src/digital_twin_plants
-      - /home/pi/scripts:/host_scripts  # Mount the host scripts directory
-      - /home/pi/plant_images:/plant_images  # Mount images directory
-      - ./camera_server.py:/usr/local/bin/camera_server.py  # Mount Flask server
-    env_file:
-      - ./config/ros/ros.env
-    ports:
-      - "5050:5050"  # Expose Flask server port
-    environment:
-      - FLASK_APP=camera_server.py
-      - FLASK_ENV=development
-    # Modified command to start both Flask server and keep container running
-    command: >
-      /bin/bash -c "
-        source /opt/ros/ros_base/setup.bash &&
-        python3 /usr/local/bin/camera_server.py &
-        /bin/bash
-      "
+    command: /bin/bash
     stdin_open: true
     tty: true
