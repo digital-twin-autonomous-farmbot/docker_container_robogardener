@@ -1,21 +1,20 @@
 from flask import Flask
 import subprocess
-import datetime
 import os
 
 app = Flask(__name__)
-IMAGE_DIR = "/home/pi/plant_images"
 
-@app.route("/take-picture")
+@app.route('/take-picture', methods=['GET'])
 def take_picture():
-    os.makedirs(IMAGE_DIR, exist_ok=True)
-    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    image_path = os.path.join(IMAGE_DIR, f"plant_{timestamp}.jpg")
-    result = subprocess.run(["libcamera-jpeg", "-o", image_path])
-    if result.returncode == 0:
-        return f"OK: {image_path}\n"
-    else:
-        return "ERROR: Could not capture image\n", 500
+    script_path = '/home/pi/take_plant_picture.sh'
+    if not os.path.isfile(script_path):
+        return f"Script not found at {script_path}", 404
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5050)
+    try:
+        result = subprocess.run(['bash', script_path], capture_output=True, text=True, check=True)
+        return f"Script executed successfully:\n{result.stdout}", 200
+    except subprocess.CalledProcessError as e:
+        return f"Script execution failed:\n{e.stderr}", 500
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5050)

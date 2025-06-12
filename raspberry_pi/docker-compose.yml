@@ -9,6 +9,8 @@ services:
       - "/dev/ttyUSB0:/dev/ttyUSB0"  # LiDAR
       - "/dev/ttyACM0:/dev/ttyACM0"  # Motor
       - "/dev/video0:/dev/video0"     # Camera
+    volumes:
+      - /home/pi/calib_images:/calib_images
     command: /bin/bash
     stdin_open: true
     tty: true
