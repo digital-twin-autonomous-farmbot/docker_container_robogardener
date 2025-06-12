@@ -9,7 +9,7 @@ services:
       - "/dev/ttyUSB0:/dev/ttyUSB0"  # LiDAR
       - "/dev/ttyACM0:/dev/ttyACM0"  # Motor
     volumes:
-      - ../digital_twin_plants:/ros2_ws/src/digital_twin_plants  # Mount into src directory
+      - home/pi/digital_twin_plants:/ros2_ws/src/digital_twin_plants  # Mount into src directory
     environment:
       - ROS_HOSTNAME=localhost
     command: /bin/bash
