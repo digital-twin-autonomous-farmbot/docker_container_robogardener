@@ -6,15 +6,15 @@ services:
     privileged: true
     network_mode: "host"
     devices:
-      - "/dev/ttyUSB0:/dev/ttyUSB0"  # LiDAR
-      - "/dev/ttyACM0:/dev/ttyACM0"  # Motor
-      - "/dev/video0:/dev/video0"     # Camera
+      - "/dev/ttyUSB0:/dev/ttyUSB0"
+      - "/dev/ttyACM0:/dev/ttyACM0"
+      - "/dev/video0:/dev/video0"
     command: /bin/bash
     stdin_open: true
     tty: true
 
-    image_api:
-    build: ./image_api  # this is a folder you'll create next
+  image_api:
+    build: ./image_api
     ports:
       - "6000:6000"
     depends_on:
