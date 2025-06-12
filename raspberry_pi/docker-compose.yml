@@ -8,8 +8,11 @@ services:
     devices:
       - "/dev/ttyUSB0:/dev/ttyUSB0"  # LiDAR
       - "/dev/ttyACM0:/dev/ttyACM0"  # Motor
+      - "/dev/video0:/dev/video0"     # Camera
     volumes:
-      - home/pi/digital_twin_plants:/ros2_ws/src/digital_twin_plants  # Mount into src directory
+      - /home/pi/digital_twin_plants:/ros2_ws/src/digital_twin_plants
+      - /usr/bin/libcamera-jpeg:/usr/bin/libcamera-jpeg  # Mount the host's libcamera binary
+      - /usr/lib/aarch64-linux-gnu:/usr/lib/aarch64-linux-gnu  # Required libraries
     environment:
       - ROS_HOSTNAME=localhost
     command: /bin/bash
