@@ -4,12 +4,12 @@ services:
   plant_monitor:
     image: ros:jazzy-arm64-desktop  # Replace with your built image name if different
     privileged: true  # Needed for device access
-    network_mode: "ros_network"
+    network_mode: "host"
     devices:
       - "/dev/ttyUSB0:/dev/ttyUSB0"  # LiDAR
       - "/dev/ttyACM0:/dev/ttyACM0"  # Motor
     volumes:
-      - ./:/digital_twin_plants  # Mount your project directory
+      - ./:/home/pi/digital_twin_plants/picture_taking_scripts  # Mount your project directory
     environment:
 
       - ROS_HOSTNAME=localhost
