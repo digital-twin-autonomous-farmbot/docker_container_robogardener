@@ -5,15 +5,18 @@ import os
 
 app = Flask(__name__)
 IMAGE_DIR = "/home/pi/plant_images"
+SCRIPT_PATH = "/home/pi/digital_twin_plants/picture_taking_scripts/take_plant_picture.sh"
 
 @app.route("/take-picture")
 def take_picture():
     os.makedirs(IMAGE_DIR, exist_ok=True)
-    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    image_path = os.path.join(IMAGE_DIR, f"plant_{timestamp}.jpg")
-    result = subprocess.run(["libcamera-jpeg", "-o", image_path])
+    # Make sure the script is executable
+    subprocess.run(["chmod", "+x", SCRIPT_PATH])
+    # Run the script
+    result = subprocess.run([SCRIPT_PATH])
+    
     if result.returncode == 0:
-        return f"OK: {image_path}\n"
+        return "OK: Picture taken successfully\n"
     else:
         return "ERROR: Could not capture image\n", 500
 
