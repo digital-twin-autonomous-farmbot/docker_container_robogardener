@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  plant_monitor:
+    image: ros:jazzy-arm64-desktop  # Replace with your built image name if different
+    privileged: true  # Needed for device access
+    network_mode: "host"
+    devices:
+      - "/dev/ttyUSB0:/dev/ttyUSB0"  # LiDAR
+      - "/dev/ttyACM0:/dev/ttyACM0"  # Motor
+      - "/dev/video0:/dev/video0"     # Camera 1
+      - "/dev/video1:/dev/video1"     # Camera 2
+    volumes:
+      - ./:/workspace  # Mount your project directory
+    environment:
+      - DISPLAY=${DISPLAY}
+      - ROS_HOSTNAME=localhost
+    command: /bin/bash  # Start with interactive shell
+    stdin_open: true    # Keep STDIN open
+    tty: true          # Allocate a pseudo-TTY
