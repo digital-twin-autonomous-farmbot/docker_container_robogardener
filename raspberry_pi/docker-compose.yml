@@ -2,17 +2,16 @@ version: '3.8'
 
 services:
   plant_monitor:
-    image: ros:jazzy-arm64-desktop  # Replace with your built image name if different
-    privileged: true  # Needed for device access
+    image: ros:jazzy-arm64-desktop
+    privileged: true
     network_mode: "host"
     devices:
       - "/dev/ttyUSB0:/dev/ttyUSB0"  # LiDAR
       - "/dev/ttyACM0:/dev/ttyACM0"  # Motor
     volumes:
-      - ./:/home/pi/digital_twin_plants/picture_taking_scripts  # Mount your project directory
+      - ../digital_twin_plants:/ros2_ws/src/digital_twin_plants  # Mount into src directory
     environment:
-
       - ROS_HOSTNAME=localhost
-    command: /bin/bash  # Start with interactive shell
-    stdin_open: true    # Keep STDIN open
-    tty: true          # Allocate a pseudo-TTY
+    command: /bin/bash
+    stdin_open: true
+    tty: true
