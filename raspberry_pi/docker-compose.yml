@@ -9,8 +9,26 @@ services:
       - "/dev/ttyUSB0:/dev/ttyUSB0"  # LiDAR
       - "/dev/ttyACM0:/dev/ttyACM0"  # Motor
       - "/dev/video0:/dev/video0"     # Camera
-    volumes:
-      - /home/pi/calib_images:/calib_images
     command: /bin/bash
     stdin_open: true
     tty: true
+
+    image_api:
+    build: ./image_api  # this is a folder you'll create next
+    ports:
+      - "6000:6000"
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URI=mongodb://mongo:27017
+
+  mongo:
+    image: mongo:7
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
