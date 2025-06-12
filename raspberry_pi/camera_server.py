@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route('/take-picture', methods=['GET'])
 def take_picture():
-    script_path = '/home/pi/take_plant_picture.sh'
+    script_path = '/home/pi/digital_twin_plants/picture_taking_scripts/take_plant_picture.sh'
     if not os.path.isfile(script_path):
         return f"Script not found at {script_path}", 404
 
