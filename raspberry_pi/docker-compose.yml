@@ -12,7 +12,7 @@ services:
     environment:
       - ROS_DOMAIN_ID=42
       - ROS_AUTOMATIC_DISCOVERY_RANGE=off
-      - ROS_STATIC_PEERS=${ROS_STATIC_PEERS}
+      - ROS_STATIC_PEERS=100.104.47.93
     command: /bin/bash
     stdin_open: true
     tty: true
