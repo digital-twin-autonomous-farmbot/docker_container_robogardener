@@ -9,6 +9,10 @@ services:
       - "/dev/ttyUSB0:/dev/ttyUSB0"
       - "/dev/ttyACM0:/dev/ttyACM0"
       - "/dev/video0:/dev/video0"
+    environment:
+      - ROS_DOMAIN_ID=42
+      - ROS_AUTOMATIC_DISCOVERY_RANGE=off
+      - ROS_STATIC_PEERS=${ROS_STATIC_PEERS}
     command: /bin/bash
     stdin_open: true
     tty: true
